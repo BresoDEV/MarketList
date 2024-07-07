@@ -1,0 +1,292 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Lista de Compras</title>
+</head>
+<style>
+    * {
+        margin: 0;
+        padding: 0;
+        border: 0;
+        font-family: 'Open Sans';
+        color: #eee;
+        cursor: pointer; 
+    }
+
+    html,
+    body {
+        background-color: #333;
+    }
+
+    .topo {
+        margin-left: 10%;
+        width: 73%;
+        background-color: #333;
+        padding: 3%;
+        margin-top: 20px;
+        border-radius: 15px;
+        box-shadow: 5px 5px 22px #666;
+    }
+
+    table {
+        width: 100%;
+        text-align: center; 
+    }
+ 
+
+
+    input,
+    select,
+    option {
+        width: 80%;
+        padding: 5px;
+        border-radius: 5px;
+        margin-top: 3px;
+        background-color: #333;
+        border: 1px solid #666;
+    }
+
+    th{
+        color: rgb(183, 180, 180);
+    }
+
+    .vm {
+        background-color: red;
+    }
+    .w50 {
+        width: 100%;
+        padding: 2px;
+    }
+
+    button {
+        width: 100%;
+        padding: 5px;
+        border-radius: 5px;
+        background-color: rgb(54, 144, 96);
+        color: aliceblue;
+    }
+
+    hr {
+        background-color: rgb(255, 255, 255);
+        margin-bottom: 2px;
+        margin-top: 2px;
+        padding-bottom: 1px;
+
+    }
+</style>
+
+<body>
+
+
+    <div class="topo">
+        <table>
+            <tr>
+                <td><label for="item">Produto</label></td>
+                <td><input type="text" name="item" id="Produto" placeholder="Ex: Cooca-Cola 2ltrs"></td>
+            </tr>
+            <tr>
+                <td><label for="Quantidade">Quantidade</label></td>
+                <td><input type="number" name="Quantidade" min="1" id="Quantidade" value="1"></td>
+            </tr>
+            <tr>
+                <td><label for="Categoria">Categoria</label></td>
+                <td>
+                    <select name="Categoria" id="Categoria">
+                        <option value="&#129529;Limpeza">Limpeza</option>
+                        <option value="&#127858;Comida">Comida</option>
+                        <option value="&#129371;Bebida">Bebida</option>
+                        <option value="&#129524;Higiene">Higiene</option>
+                        <option value="&#128138;Remedios">Remedios</option>
+                        <option value="&#127813;Frutas">Frutas</option>
+                        <option value="&#127868;Bebê">Bebê</option>
+                        <option value="&#127829;Besteiras">Besteiras</option>
+                    </select>
+                </td>
+            </tr>
+
+            <tr>
+                <td colspan="4">
+                    <hr>
+                </td>
+            </tr>
+            <tr>
+                <td colspan="2"><button id="Adicionar">Adicionar</button></td>
+            </tr>
+        </table>
+    </div>
+
+    <!------------------------------>
+    <div class="topo" id="table">
+
+    </div>
+    <!------------------------------>
+
+    <div class="topo">
+        <button id="Resetar">Resetar Toda Lista</button>
+    </div>
+    <div class="topo">
+        <center>
+            <h3>Salvar/Carregar Listas</h3>
+            <input type="text" name="" id="NomeSalvar" placeholder="Nome da Lista. Ex: Compra Economica"><br><br>
+            <button id="Salvar">Salvar</button>
+        </center>
+        <br>
+        <hr>
+        <table id="ul">
+            
+        </table>
+    </div>
+
+</body>
+<script>
+
+    //exibir listas salvas
+    var ul = document.getElementById('ul')
+    for (let i = 0; i < 1000; i++) {
+        if (localStorage.getItem('ListaComprasPronta_' + i)) {
+            //NomeSalvar
+            ul.innerHTML += `
+
+            <tr>
+                <td colspan='2'>
+                    ${localStorage.getItem('NomeSalvar' + i)}
+                </td> 
+                <td>
+                    <button onclick="carregarLista(${i})" class='w50'>Carregar Lista</button>
+                </td>
+                <td>
+                    <button onclick="apagarLista(${i})" class='vm w50'>Apagar Lista</button>
+                </td>
+            </tr>
+
+            <tr>
+                <td colspan='4'>
+                   <hr>
+                </td>
+            </tr>
+
+
+
+            `
+        }
+    }
+
+    function carregarLista(n) {
+        let table = document.getElementById('table')
+        table.innerHTML = localStorage.getItem('ListaComprasPronta_' + n)
+    }
+
+    function apagarLista(n) {
+        localStorage.removeItem('ListaComprasPronta_' + n)
+        localStorage.removeItem('NomeSalvar' + n)
+        window.location.reload()
+    }
+
+
+    document.getElementById('Salvar').addEventListener('click', () => {
+
+        let NomeSalvar = document.getElementById('NomeSalvar').value
+        let ind = 0;
+        for (let i = 0; i < 1000; i++) {
+            if (!localStorage.getItem('ListaComprasPronta_' + i)) {
+                ind = i;
+                break;
+            }
+        }
+        localStorage.setItem('ListaComprasPronta_' + ind, s)
+        localStorage.setItem('NomeSalvar' + ind, NomeSalvar)
+        window.location.reload()
+    })
+
+    //==========================================
+
+    document.getElementById('Resetar').addEventListener('click', () => {
+        for (let i = 0; i < 1000; i++) {
+            if (localStorage.getItem('ListaCompras_' + i)) {
+                localStorage.removeItem('ListaCompras_' + i)
+            }
+        }
+        window.location.reload()
+    })
+
+    document.getElementById('Adicionar').addEventListener('click', () => {
+        var a = document.getElementById('Produto').value
+        var b = document.getElementById('Quantidade').value
+        var c = document.getElementById('Categoria').value
+        addItem(c, a, b)
+    })
+
+    function addItem(cat, nome, quant) {
+        var index = 0;
+        for (let i = 0; i < 1000; i++) {
+            if (!localStorage.getItem('ListaCompras_' + i)) {
+                index = i;
+                break;
+            }
+        }
+        localStorage.setItem('ListaCompras_' + index, cat + '|' + nome + '|' + quant + '|0')
+
+        window.location.reload()
+    }
+
+    const table = document.getElementById('table')
+    var events = []
+    var s = `<table>
+                <tr>
+                    <th>Categoria</th>
+                    <th>Item</th>
+                    <th>Quantidade</th>
+                    <th></th>
+                </tr>
+                <tr>
+                    <td colspan='4'><hr></td>
+                </tr>
+                `
+
+    for (let i = 0; i < 1000; i++) {
+        if (!localStorage.getItem('ListaCompras_' + i)) {
+            break;
+        }
+        else {
+            var a = localStorage.getItem('ListaCompras_' + i).split('|')
+
+            if (a[3] !== 'x') {
+                events.push(i)
+                s += `
+                    <tr>
+                            <td>${a[0]}</td>
+                            <td>${a[1]}</td>
+                            <td>${a[2]}</td>
+                            <td><button id="ID_${i}" class="vm">X</button></td>
+                        </tr>
+
+                        <tr>
+                            <td colspan='4'><hr></td>
+                        </tr>
+                    `
+
+            }
+
+        }
+    }
+
+    s += '</table>'
+    table.innerHTML = s;
+
+    events.forEach(element => {
+
+        document.getElementById('ID_' + element).addEventListener('click', () => {
+            localStorage.setItem('ListaCompras_' + element, 'a|a|a|x')
+            window.location.reload()
+        })
+
+    });
+
+
+</script>
+
+</html>
