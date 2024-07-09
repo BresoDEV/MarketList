@@ -14,7 +14,10 @@
         border: 0;
         font-family: 'Open Sans';
         color: #eee;
-        cursor: pointer; 
+        cursor: pointer;
+        user-select: none;
+        -webkit-tap-highlight-color: transparent;
+        -webkit-touch-callout: none;
     }
 
     html,
@@ -34,9 +37,9 @@
 
     table {
         width: 100%;
-        text-align: center; 
+        text-align: center;
     }
- 
+
 
 
     input,
@@ -50,13 +53,14 @@
         border: 1px solid #666;
     }
 
-    th{
+    th {
         color: rgb(183, 180, 180);
     }
 
     .vm {
         background-color: red;
     }
+
     .w50 {
         width: 100%;
         padding: 2px;
@@ -69,6 +73,13 @@
         background-color: rgb(54, 144, 96);
         color: aliceblue;
     }
+    .button2 { 
+        padding: 5px;
+        border-radius: 5px;
+        background-color: rgb(54, 144, 96);
+        color: aliceblue;
+        width: 40%;
+    }
 
     hr {
         background-color: rgb(255, 255, 255);
@@ -76,6 +87,14 @@
         margin-top: 2px;
         padding-bottom: 1px;
 
+    }
+    textarea{
+        width: 90%;
+        resize: none;
+        background-color: #666;
+        border-radius: 10px;
+        padding: 5px;
+        color: aliceblue;
     }
 </style>
 
@@ -96,25 +115,47 @@
                 <td><label for="Categoria">Categoria</label></td>
                 <td>
                     <select name="Categoria" id="Categoria">
-                        <option value="&#129529;Limpeza">Limpeza</option>
-                        <option value="&#127858;Comida">Comida</option>
-                        <option value="&#129371;Bebida">Bebida</option>
-                        <option value="&#129524;Higiene">Higiene</option>
-                        <option value="&#128138;Remedios">Remedios</option>
-                        <option value="&#127813;Frutas">Frutas</option>
-                        <option value="&#127868;Bebê">Bebê</option>
-                        <option value="&#127829;Besteiras">Besteiras</option>
+                        <option value="Limpeza">Limpeza</option>
+                        <option value="Comida">Comida</option>
+                        <option value="Bebida">Bebida</option>
+                        <option value="Higiene">Higiene</option>
+                        <option value="Remedios">Remedios</option>
+                        <option value="Frutas">Frutas</option>
+                        <option value="Bebê">Bebê</option>
+                        <option value="Besteiras">Besteiras</option>
                     </select>
                 </td>
             </tr>
+<!--
 
+                &#129529;
+&#127858;
+&#129371;
+&#129524;
+&#128138;
+&#127813;
+&#127868;
+&#127829;
+            -->
             <tr>
                 <td colspan="4">
-                    <hr>
+                     
                 </td>
             </tr>
             <tr>
                 <td colspan="2"><button id="Adicionar">Adicionar</button></td>
+            </tr>
+            <tr><td colspan="2"></td></tr>
+            <tr><td colspan="2"><hr></td></tr>
+            <tr><td colspan="2"></td></tr>
+            <tr>
+                <td colspan="2"><button id="Resetar">Resetar Toda Lista</button></td>
+            </tr>
+            <tr>
+                <td colspan="2"></td>
+            </tr>
+            <tr>
+                <td colspan="2"></td>
             </tr>
         </table>
     </div>
@@ -126,7 +167,17 @@
     <!------------------------------>
 
     <div class="topo">
-        <button id="Resetar">Resetar Toda Lista</button>
+        
+        <center>
+            <h3>Compartilhar/Carregar Listas</h3>
+            <textarea name="" id="textarea" cols="10" rows="3" placeholder="Código..."></textarea>
+        </center>
+        <br> 
+        <center>
+            <button class="button2" id="CarregarCodigo">Carregar Codigo</button>
+        <button class="button2" id="Compartilhar">Compartilhar Lista</button>
+        </center>
+        
     </div>
     <div class="topo">
         <center>
@@ -137,7 +188,7 @@
         <br>
         <hr>
         <table id="ul">
-            
+
         </table>
     </div>
 
@@ -177,7 +228,33 @@
 
     function carregarLista(n) {
         let table = document.getElementById('table')
-        table.innerHTML = localStorage.getItem('ListaComprasPronta_' + n)
+        var lista = localStorage.getItem('ListaComprasPronta_' + n)
+
+         lista = lista.replace(/<hr>/g,'<!--hr removido-->');
+       
+        table.innerHTML = lista
+
+       
+        
+        for (let i = 0; i < 1000; i++) {
+
+            if (document.getElementById('ID_' + i)) {
+                console.log('ID_' + i)
+                document.getElementById('ID_' + i).addEventListener('click', () => {
+                    
+                    //deixa verde
+                   // document.getElementById('ID_' + i).style.backgroundColor='green'
+                   // document.getElementById('ID_' + i).innerHTML='V'
+                   
+
+                   var linha = document.getElementById('ID_' + i).parentNode.parentNode
+                   linha.parentNode.removeChild(linha)
+                })
+            }
+
+        }
+
+
     }
 
     function apagarLista(n) {
@@ -203,6 +280,26 @@
     })
 
     //==========================================
+
+    function cripto(m) {
+        return m.replace(/[A-Za-z]/g, (c) => {
+            return String.fromCharCode(c.charCodeAt(0) +
+                (c.toLowerCase() < 'n' ? 13 : -13))
+        })
+    }
+
+    document.getElementById('CarregarCodigo').addEventListener('click', () => {
+        //console.log(cripto(document.getElementById('table').innerHTML))
+        document.getElementById('table').innerHTML=cripto(document.getElementById('textarea').value)
+        document.getElementById('textarea').value=''
+    })
+
+    document.getElementById('Compartilhar').addEventListener('click', () => {
+        //console.log(cripto(document.getElementById('table').innerHTML))
+        var um = document.getElementById('table').innerHTML.replace(/\n/g,'')
+        var dois = um.replace(/  /g,'')
+        document.getElementById('textarea').value=cripto(dois)
+    })
 
     document.getElementById('Resetar').addEventListener('click', () => {
         for (let i = 0; i < 1000; i++) {
