@@ -107,7 +107,7 @@
         <table>
             <tr>
                 <td><label for="item">Produto</label></td>
-                <td><input type="text" name="item" id="Produto" placeholder="Ex: Cooca-Cola 2ltrs"></td>
+                <td><input type="text" name="item" id="Produto" placeholder="Ex: Coca-Cola 2ltrs"></td>
             </tr>
             <tr>
                 <td><label for="Quantidade">Quantidade</label></td>
@@ -180,19 +180,19 @@
     <div class="topo">
 
         <center>
-            <h3>Compartilhar/Carregar Listas</h3>
+            <h3>Compartilhar/Carregar Listas</h3><br>
             <textarea name="" id="textarea" cols="10" rows="3" placeholder="Código..."></textarea>
         </center>
         <br>
         <center>
-            <button class="button2" id="CarregarCodigo">Carregar Codigo</button>
-            <button class="button2" id="Compartilhar">Compartilhar Lista</button>
+            <button class="button2" id="CarregarCodigo">Carregar</button>
+            <button class="button2" id="Compartilhar">Compartilhar</button>
         </center>
 
     </div>
     <div class="topo">
         <center>
-            <h3>Salvar/Carregar Listas</h3>
+            <h3>Salvar/Carregar Listas</h3><br>
             <input type="text" name="" id="NomeSalvar" placeholder="Nome da Lista. Ex: Compra Economica"><br><br>
             <button id="Salvar">Salvar</button>
         </center>
@@ -310,6 +310,14 @@
         var um = document.getElementById('table').innerHTML.replace(/\n/g, '')
         var dois = um.replace(/  /g, '')
         document.getElementById('textarea').value = cripto(dois)
+        document.getElementById('textarea').select()
+        setTimeout(() => {
+            document.execCommand('copy')
+            document.getElementById('textarea').value='Codigo copiado com sucesso!'
+            setTimeout(() => {
+                document.getElementById('textarea').value=''
+            }, 3000);
+        }, 1000);
     })
 
     document.getElementById('Resetar').addEventListener('click', () => {

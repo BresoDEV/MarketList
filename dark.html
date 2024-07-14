@@ -169,20 +169,20 @@
     <div class="topo">
         
         <center>
-            <h3>Compartilhar/Carregar Listas</h3>
+            <h3>Compartilhar/Carregar Listas</h3><br>
             <textarea name="" id="textarea" cols="10" rows="3" placeholder="Código..."></textarea>
         </center>
         <br> 
         <center>
-            <button class="button2" id="CarregarCodigo">Carregar Codigo</button>
-        <button class="button2" id="Compartilhar">Compartilhar Lista</button>
+            <button class="button2" id="CarregarCodigo">Carregar</button>
+        <button class="button2" id="Compartilhar">Compartilhar</button>
         </center>
         
     </div>
     <div class="topo">
         <center>
-            <h3>Salvar/Carregar Listas</h3>
-            <input type="text" name="" id="NomeSalvar" placeholder="Nome da Lista. Ex: Compra Economica"><br><br>
+            <h3>Salvar/Carregar Listas</h3><br>
+            <input type="text" name="" id="NomeSalvar" placeholder="Ex: Compra Economica"><br><br>
             <button id="Salvar">Salvar</button>
         </center>
         <br>
@@ -299,6 +299,14 @@
         var um = document.getElementById('table').innerHTML.replace(/\n/g,'')
         var dois = um.replace(/  /g,'')
         document.getElementById('textarea').value=cripto(dois)
+        document.getElementById('textarea').select()
+        setTimeout(() => {
+            document.execCommand('copy')
+            document.getElementById('textarea').value='Codigo copiado com sucesso!'
+            setTimeout(() => {
+                document.getElementById('textarea').value=''
+            }, 3000);
+        }, 1000);
     })
 
     document.getElementById('Resetar').addEventListener('click', () => {
